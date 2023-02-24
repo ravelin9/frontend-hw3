@@ -1,0 +1,76 @@
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+  background: #FFFFFF;
+  border-bottom: 2px solid #F3F3F3;
+  background: url("../../../public/Frame 4.svg") no-repeat 20px 40px;
+  margin-bottom: 70px;
+  font-family: 'Eudoxus Sans', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 180%;
+  padding-top: 17px;
+}
+.logo {
+  position: absolute;
+  align-items: start;
+  justify-content: start;
+  height: 140px;
+  width: 200px;
+  left: 1px;
+  top: 1px;
+}
+.link {
+  padding: 30px;
+  text-decoration: none;
+  display: block;
+  height: 60px;
+  color: #151411;
+}
+.link:hover {
+  color: #518581;
+  border-bottom: 3px solid #518581;
+}
+
+.cart {
+  position: absolute;
+  right: 80px;
+  height: 60px;
+  width: 50px;
+  background: url("../../../public/bag-2.svg") no-repeat;
+}
+.user {
+  position: absolute;
+  right: 40px;
+  height: 60px;
+  width: 30px;
+  background: url("../../../public/user.svg") no-repeat;
+}
+
+@media (max-width: 700px) {
+  .header{
+    position: page;
+    height: 72px;
+    background: url("../../../public/Frame 4.svg") no-repeat 10px 22px;
+  }
+  .link{
+    display: none;
+  }
+  .cart{
+    display: none;
+  }
+  .user{
+    display: none;
+  }
+  .menu{
+    position: absolute;
+    height: 65px;
+    width: 40px;
+    right: 20px;
+    background: url("../../../public/menu.svg") no-repeat 20px 10px;
+  }
+}

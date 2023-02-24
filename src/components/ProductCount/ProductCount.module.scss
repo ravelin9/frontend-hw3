@@ -1,0 +1,37 @@
+.counter {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+margin-top: 15px;
+  width: 60px;
+  height: 30px;
+
+  /* Placeholder Color */
+
+  background: #F9F9F9;
+  border-radius: 20px;
+
+  font-family: 'Eudoxus Sans', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 130%;
+  /* identical to box height, or 21px */
+
+
+  /* Main Color */
+
+  color: #518581;
+}
+
+@media screen and (max-width: 700px) {
+  .counter{
+    margin-left: 8px;
+    margin-top: -3px;
+    margin-bottom: 10px;
+    font-size: 12px;
+  }
+}

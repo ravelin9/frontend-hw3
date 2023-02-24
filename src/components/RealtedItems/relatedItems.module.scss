@@ -1,0 +1,40 @@
+.relatedItemsContainer{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  grid-auto-rows: 0;
+  overflow: hidden;
+  margin-left: 100px;
+  margin-top: 20px;
+  color: #151411;
+  gap: 29px;
+}
+.title {
+  margin-top: 50px;
+  margin-bottom: 30px;
+  margin-left: 100px;
+  font-family: 'Eudoxus Sans', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 130%;
+  /* identical to box height, or 42px */
+
+  letter-spacing: 0.01em;
+
+  /* Text Color */
+
+  color: #151411;;
+}
+@media screen and (max-width: 700px) {
+  .relatedItemsContainer{
+    display: grid;
+    margin-left: 10px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+  .title{
+    font-size: 18px;
+    margin-left: 10px;
+  }
+}

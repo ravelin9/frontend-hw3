@@ -1,0 +1,32 @@
+.loaderSizel{
+  display: inline-block;
+  width: 49px;
+  height: 49px;
+  left: 99.73px;
+  top: 667.73px;
+  border: 6px solid #518581;
+  border-top: 6px solid transparent;
+  border-radius: 50%;
+  transform: rotate(120deg);
+  animation: rotate 1.5s linear infinite;
+}
+.loaderSizes {
+  margin-right: 17px;
+  margin-left: 0;
+  width: 1rem;
+  height: 1rem;
+  border: 3px solid #ffff;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: rotate 1s linear infinite;
+  transform: rotate(30deg);
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
