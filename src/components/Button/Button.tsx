@@ -3,7 +3,7 @@ import React from "react";
 import classNames from "classnames";
 
 import styles from "./Button.module.scss";
-import { Loader, LoaderSize } from "../Loader/Loader";
+import Loader, { LoaderSize } from "../Loader/Loader";
 
 let cx = classNames.bind(styles);
 
@@ -17,7 +17,7 @@ export type ButtonProps = React.PropsWithChildren<{
 }> &
   React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const Button: React.FC<ButtonProps> = ({
+const Button: React.FC<ButtonProps> = ({
   children,
   loading,
   disabled,
@@ -40,3 +40,5 @@ export const Button: React.FC<ButtonProps> = ({
     </button>
   );
 };
+
+export default React.memo(Button);

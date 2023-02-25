@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-import { Button } from "@components/Button/Button";
+import Button from "@components/Button/Button";
 import Card from "@components/Card";
-import { Input } from "@components/Input/Input";
-import { MultiDropdown, Option } from "@components/MultiDropdown/MultiDropdown";
-import ProductCount from "@components/ProductCount";
+import Input from "@components/Input/Input";
+import MultiDropdown, { Option } from "@components/MultiDropdown/MultiDropdown";
+import ProductCount from "@components/ProductCount/ProductCount";
 import ReactPaginate from "react-paginate";
 import { useNavigate } from "react-router-dom";
 
@@ -36,7 +36,7 @@ const Products = () => {
   const displayProducts = products
     .slice(currentPage * productsPerPage, (currentPage + 1) * productsPerPage) // выбрать только товары, которые нужно показывать на текущей странице
     .map((pro) => (
-      <div key={pro.id} className={styles.cards}>
+      <div key={pro.id} className={styles.card}>
         <Card
           category={pro.category.name}
           image={pro.images[0]}

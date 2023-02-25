@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import Card from "@components/Card";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import styles from "./relatedItems.module.scss";
-import { IProducts } from "../../app/pages/products/model/IProducts";
+import { IProducts } from "../../entities/client";
 
-// @ts-ignore
-const RelatedItems = ({ categoryId }) => {
+type Props = {
+  categoryId: number;
+};
+
+const RelatedItems = ({ categoryId }: Props) => {
   const navigate = useNavigate();
   const [relatedProducts, setRelatedProducts] = useState<IProducts[]>([]);
 
@@ -18,15 +21,22 @@ const RelatedItems = ({ categoryId }) => {
         const response = await axios.get<IProducts[]>(
           `https://api.escuelajs.co/api/v1/products/?categoryId=${categoryId}`
         );
-        setRelatedProducts(response.data.slice(0, 4)); // get first three related products
+        setRelatedProducts(response.data.slice(0, 4));
       } catch (error) {
         // eslint-disable-next-line no-console
-        console.log(error);
+        console.error(error);
       }
     };
 
     fetchRelatedProducts();
   }, [categoryId]);
+
+  const handleClick = useCallback(
+    (id: number) => {
+      navigate(`/product/${id}`);
+    },
+    [navigate]
+  );
 
   return (
     <>
@@ -40,7 +50,7 @@ const RelatedItems = ({ categoryId }) => {
             title={product.title}
             subtitle="Combination of wood and wool"
             content={`$${product.price}`}
-            onClick={() => navigate(`/product/${product.id}`)}
+            onClick={() => handleClick(product.id)}
           />
         ))}
       </div>
@@ -48,4 +58,4 @@ const RelatedItems = ({ categoryId }) => {
   );
 };
 
-export default RelatedItems;
+export default React.memo(RelatedItems);

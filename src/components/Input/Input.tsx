@@ -13,7 +13,7 @@ export type InputProps = Omit<
   onChange: (value: string) => void;
 };
 
-export const Input: FC<InputProps> = ({
+const Input: FC<InputProps> = ({
   value,
   onChange,
   className,
@@ -39,3 +39,5 @@ export const Input: FC<InputProps> = ({
     />
   );
 };
+
+export default React.memo(Input);

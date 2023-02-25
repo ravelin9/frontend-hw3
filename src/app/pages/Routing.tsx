@@ -1,11 +1,11 @@
 import React from "react";
 
+import Header from "@components/header/Header";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import ProductDetails from "./productDetails";
-import Products from "./products";
-import ProductsProvider from "./products/ProductsProvider";
-import Header from "../../components/header";
+import ProductDetails from "./ProductDetails/ProductDetails";
+import Products from "./Products/Products";
+import ProductsProvider from "./Products/ProductsProvider";
 const Routing = () => {
   return (
     <ProductsProvider>

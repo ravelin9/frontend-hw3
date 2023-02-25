@@ -2,8 +2,8 @@ import React from "react";
 
 import ReactDOM from "react-dom/client";
 
-import Routing from "./app/pages";
-import ProductsProvider from "./app/pages/products/ProductsProvider";
+import ProductsProvider from "./app/pages/Products/ProductsProvider";
+import Routing from "./app/pages/Routing";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

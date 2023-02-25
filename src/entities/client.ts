@@ -15,3 +15,8 @@ export interface IProducts {
 export interface IProductsContext {
   products: IProducts[];
 }
+
+export interface IProductContext {
+  product: IProducts;
+  isLoading: boolean;
+}

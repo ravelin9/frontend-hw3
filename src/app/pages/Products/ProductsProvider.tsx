@@ -2,7 +2,7 @@ import React, { useEffect, useState, createContext, useContext } from "react";
 
 import axios from "axios";
 
-import { IProducts, IProductsContext } from "./model/IProducts";
+import { IProducts, IProductsContext } from "../../../entities/client";
 
 export const ProductsContext = createContext<IProductsContext>({
   products: [],

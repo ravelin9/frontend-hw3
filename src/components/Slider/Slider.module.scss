@@ -1,0 +1,44 @@
+.container{
+  position: relative;
+  width: 640px;
+}
+.img{
+  width: auto;
+}
+.btn_previous{
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+  position: absolute;
+  left: 20px;
+  top: 208px;
+  padding-left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 100%;
+  border: none;
+  transform: rotate(180deg);
+  &:hover{
+    background: rgba(0, 0, 0, 0.8);
+  }
+}
+.btn_next{
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+  position: absolute;
+  right: 20px;
+  top: 208px;
+  padding-left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 100%;
+  border: none;
+  &:hover{
+    background: rgba(0, 0, 0, 0.8);
+  }
+}

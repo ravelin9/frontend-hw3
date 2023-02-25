@@ -14,7 +14,7 @@ export type MultiDropdownProps = {
   pluralizeOptions: (value: Option[]) => string;
 };
 
-export const MultiDropdown: React.FC<MultiDropdownProps> = ({
+const MultiDropdown: React.FC<MultiDropdownProps> = ({
   options,
   value,
   onChange,
@@ -68,3 +68,5 @@ export const MultiDropdown: React.FC<MultiDropdownProps> = ({
     </div>
   );
 };
+
+export default React.memo(MultiDropdown);
