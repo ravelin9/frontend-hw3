@@ -1,0 +1,35 @@
+@mixin font-700 {
+  font-family: 'Eudoxus Sans', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%;
+  font-size: 18px;
+}
+
+@mixin font-500 {
+  font-family: 'Eudoxus Sans', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 180%;
+  font-size: 18px;
+}
+
+@mixin shadow {
+  box-shadow: 0 4px 20px rgba(175, 173, 181, 0.2);
+}
+@mixin flex_center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@mixin slider_btn{
+  position: absolute;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+  padding-left: 10px;
+  @include flex_center;
+  width: 64px;
+  height: 64px;
+  border-radius: 100%;
+  border: none;
+}

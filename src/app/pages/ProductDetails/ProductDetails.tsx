@@ -48,24 +48,27 @@ const ProductDetails = () => {
   if (isLoading) {
     return <Loader className={styles.loader} loading={true} />;
   }
+  const product_info = (
+    <>
+      <div className={styles.title}>{product.title}</div>
+      <div className={styles.description}>{product.description}</div>
+      <div className={styles.price}>{`$${product.price}`}</div>
+      <div className={styles.container_buttons}>
+        <Button className={styles.buynowbtn}>Buy now</Button>
+        <Button className={styles.button_cart}>Add to cart</Button>
+      </div>
+    </>
+  );
   return (
     <>
       <>
-        <div className={styles.mainContainer}>
-          <div className={styles.sliderContainer}>
+        <div className={styles.container_main}>
+          <div className={styles.container_slider}>
             <Slider product={product} />
           </div>
-          <div className={styles.productContainer}>
-            <div className={styles.title}>{product.title}</div>
-            <div className={styles.description}>{product.description}</div>
-            <div className={styles.price}>{`$${product.price}`}</div>
-            <div className={styles.buttonsContainer}>
-              <Button className={styles.buynowbtn}>Buy now</Button>
-              <Button className={styles.cartbtn}>Add to cart</Button>
-            </div>
-          </div>
+          <div className={styles.container_product}>{product_info}</div>
         </div>
-        <div className={styles.relatedContainer}>
+        <div className={styles.container_related}>
           <RelatedItems categoryId={product.category.id} />
         </div>
       </>

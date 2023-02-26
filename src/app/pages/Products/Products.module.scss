@@ -1,128 +1,123 @@
-.cardContainer {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 29px;
-  align-items: start;
-  margin-left: 100px;
+@import "./src/styles/variables";
+@import "./src/styles/mixins";
+
+.container {
+  &_card {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 29px;
+    align-items: start;
+    margin-left: 100px;
+  }
+
+  &_search {
+    position: relative;
+    @include flex_center;
+    width: 70vw;
+    margin: 20px 20px 20px 100px;
+  }
+
+  &_dropdown {
+    position: absolute;
+    top: 402px;
+    right: 80px;
+  }
+
+  &_label {
+    margin: 50px 100px;
+    display: flex;
+    flex-direction: row;
+    @include font-700;
+    font-size: 44px;
+  }
 }
-.card{
+
+.card {
   margin: 0;
 }
-.searchContainer {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 70vw;
-  margin: 20px 20px 20px 100px;
-}
-.dropdownContainer {
-  position: absolute;
-  top: 402px;
-  right: 80px;
-}
+
+
 .button {
   position: absolute;
   right: 14px;
 }
-.pagination{
-  font-family: 'Eudoxus Sans', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 18px;
+
+.pagination {
+  @include font-500;
   line-height: 180%;
   margin-bottom: 70px;
-  display: flex;
+  @include flex_center;
   flex-direction: row;
-  align-items: center;
   gap: 10px;
-  justify-content: center;
   cursor: pointer;
   list-style-type: none;
 }
 
-.active{
+.active {
   color: aliceblue;
-  background-color: #518581;
+  background-color: $green;
 }
 
 .page {
-  display: flex;
+  @include flex_center;
   border: 1.5px solid #F9F9F9;
   width: 38px;
   height: 42px;
-  align-items: center;
-  justify-content: center;
 }
-.links{
+
+.links {
   display: block;
   width: 100%;
   height: 100%;
   text-align: center;
   margin-top: 8px;
 }
-.vectorNext{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  content: url("../../../../public/Vector.svg");
+
+.vector {
+  &_next {
+    @include flex_center;
+    content: url("../../../../public/Vector.svg");
+  }
+
+  &_previous {
+    @include flex_center;
+    content: url("../../../../public/Vector.svg");
+    transform: rotate(180deg);
+  }
+
+  &_disabled {
+    opacity: 0.3;
+    cursor: auto;
+  }
 }
 
-.vectorPrevious {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  content: url("../../../../public/Vector.svg");
-  transform: rotate(180deg);
-}
 
-.disabledVector{
-  opacity: 0.3;
-  cursor: auto;
-}
-
-.counterLabel{
-  margin: 50px 100px;
-  display: flex;
-  flex-direction: row;
-  font-family: 'Eudoxus Sans', sans-serif;
-  font-style: normal;
-  font-weight: 700;
-  font-size: 44px;
-  line-height: 130%;
-}
-
-::placeholder{
-  font-family: 'Eudoxus Sans', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 18px;
+::placeholder {
+  @include font-500;
   line-height: 180%;
-  /* or 32px */
-
-
-  /* Paragraph Color */
-
   color: #AFADB5;
 }
 
 @media (max-width: 700px) {
-  .cardContainer {
+.container{
+  &_card {
     grid-template-columns: 1fr 1fr;
     margin-left: 10px;
   }
-  .searchContainer {
+  &_search {
     margin-left: 10px;
     width: auto;
   }
-  .counterLabel{
+  &_label {
     font-size: 18px;
     margin: 5px 10px;
   }
-  ::placeholder{
+}
+
+  ::placeholder {
     font-size: 14px;
   }
-  .pagination{
-padding-left: 0;
+  .pagination {
+    padding-left: 0;
   }
 }

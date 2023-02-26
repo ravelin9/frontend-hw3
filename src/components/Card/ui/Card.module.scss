@@ -1,84 +1,62 @@
 @import 'Roboto/fonts';
 @import 'EudoxusSans/fonts';
-
-html, body {
-    font-family: 'Roboto', serif;
-}
+@import "./src/styles/variables";
+@import "./src/styles/mixins";
 
 .card {
-    align-items: flex-start;
-    padding: 0;
-    margin-left: 0;
-    width: 394px;
-    height: 544px;
+  align-items: flex-start;
+  padding: 0;
+  margin-left: 0;
+  width: 394px;
+  height: 544px;
+  cursor: pointer;
 }
 
-.card:hover {
-    cursor: pointer;
-}
 
 .title {
-    font-family: 'Eudoxus Sans', sans-serif;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 131%;
-    margin-bottom: 6px;
-    margin-top: 0;
-    margin-left: 0;
-;
+  @include font-700;
+  margin: 0 0 6px;;
 }
 
-.subtitle{
-    font-family: 'Eudoxus Sans', sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 32px;
-    color: #AFADB5;
+.subtitle {
+  @include font-500;
+  color: #AFADB5;
 }
 
 .img {
-    margin-bottom: 16px;
-    width: 394px;
-    height: 360px;
+  margin-bottom: 16px;
+  width: 394px;
+  height: 360px;
 }
+
 .price {
-    margin-top: 30px;
-    font-family: 'Eudoxus Sans', sans-serif;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 130%;
-    /* or 31px */
-
-
-    /* Text Color */
-
-    color: #151411;
+  margin-top: 30px;
+  @include font-700;
+  font-size: 24px;
+  color: #151411;
 }
 
 @media screen and (max-width: 700px) {
-.card {
+  .card {
     width: 156px;
     height: 310px;
-}
-    .img {
-        width: 156px;
-        height: 130px;
-    }
-    .title{
-        font-size: 14px;
-    }
-    .subtitle{
-        white-space: nowrap;
-        overflow: hidden;
-        font-size: 12px;
-        line-height: normal;
-        text-overflow: ellipsis;
-    }
-    .price{
-        font-size: 14px;
-        margin-top: 5px;
-    }
+  }
+  .img {
+    width: 156px;
+    height: 130px;
+  }
+  .title {
+    font-size: 14px;
+  }
+  .subtitle {
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: normal;
+    text-overflow: ellipsis;
+  }
+  .price {
+    font-size: 14px;
+    margin-top: 5px;
+  }
 }

@@ -1,15 +1,19 @@
-.loaderSizel{
+@import "./src/styles/variables";
+@import "./src/styles/mixins";
+
+.loaderSizel {
   display: inline-block;
   width: 49px;
   height: 49px;
   left: 99.73px;
   top: 667.73px;
-  border: 6px solid #518581;
+  border: 6px solid $green;
   border-top: 6px solid transparent;
   border-radius: 50%;
   transform: rotate(120deg);
   animation: rotate 1.5s linear infinite;
 }
+
 .loaderSizes {
   margin-right: 17px;
   margin-left: 0;

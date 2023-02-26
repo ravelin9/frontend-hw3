@@ -41,7 +41,7 @@ const RelatedItems = ({ categoryId }: Props) => {
   return (
     <>
       <div className={styles.title}>Related Items</div>
-      <div className={styles.relatedItemsContainer}>
+      <div className={styles.container}>
         {relatedProducts.map((product) => (
           <Card
             key={product.id}

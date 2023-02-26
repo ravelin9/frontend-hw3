@@ -16,25 +16,25 @@ const Products = () => {
   const navigate = useNavigate();
   const { products } = useProducts();
   const productCount = products.length;
-  const productsPerPage = 9; // сколько товаров отображать на странице
-  const pageCount = Math.ceil(productCount / productsPerPage); // сколько всего страниц нужно
-  const [currentPage, setCurrentPage] = useState(0); // текущая страница
+  const productsPerPage = 9;
+  const pageCount = Math.ceil(productCount / productsPerPage);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     const savedPage = localStorage.getItem("currentPage");
     if (savedPage !== null) {
       setCurrentPage(parseInt(savedPage, 10));
     }
-  }, []); // только при монтировании компонента
+  }, []);
 
   // @ts-ignore
-  const handlePageClick = ({ selected }) => {
+  const handlePageClick = ({ selected }: { selected: number }) => {
     setCurrentPage(selected);
     localStorage.setItem("currentPage", selected.toString());
   };
 
   const displayProducts = products
-    .slice(currentPage * productsPerPage, (currentPage + 1) * productsPerPage) // выбрать только товары, которые нужно показывать на текущей странице
+    .slice(currentPage * productsPerPage, (currentPage + 1) * productsPerPage)
     .map((pro) => (
       <div key={pro.id} className={styles.card}>
         <Card
@@ -47,20 +47,19 @@ const Products = () => {
         />
       </div>
     ));
-
   return (
     <>
       <ProductsLabel />
-      <div className={styles.searchContainer}>
+      <div className={styles.container_search}>
         <Input
           placeholder="Search property"
-          onChange={(value: string) => alert(value)}
+          onChange={(value: string) => value}
         />
         <div className={styles.button}>
           <Button>Find Now</Button>
         </div>
       </div>
-      <div className={styles.dropdownContainer}>
+      <div className={styles.container_dropdown}>
         <MultiDropdown
           options={[
             { key: "3", value: "Electronics" },
@@ -71,14 +70,14 @@ const Products = () => {
           pluralizeOptions={(values: Option[]) => `Filter: ${values.length}`}
         />
       </div>
-      <div className={styles.counterLabel}>
+      <div className={styles.container_label}>
         Total Product <ProductCount />
       </div>
 
-      <div className={styles.cardContainer}>{displayProducts}</div>
+      <div className={styles.container_card}>{displayProducts}</div>
       <ReactPaginate
-        previousLabel={<div className={styles.vectorPrevious} />}
-        nextLabel={<div className={styles.vectorNext} />}
+        previousLabel={<div className={styles.vector_previous} />}
+        nextLabel={<div className={styles.vector_next} />}
         breakLabel={"..."}
         pageCount={pageCount}
         marginPagesDisplayed={1}
@@ -88,8 +87,8 @@ const Products = () => {
         activeClassName={styles.active}
         pageClassName={styles.page}
         pageLinkClassName={styles.links}
-        disabledClassName={styles.disabledVector}
-        forcePage={currentPage} // устанавливаем текущую страницу в пагинации
+        disabledClassName={styles.vector_disabled}
+        forcePage={currentPage}
       />
     </>
   );
