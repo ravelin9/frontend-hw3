@@ -1,0 +1,134 @@
+@import "./src/styles/variables";
+@import "./src/styles/mixins";
+
+.container {
+  &_main {
+    display: grid;
+    grid-template-columns: 600px 1fr;
+    margin-left: 100px;
+  }
+  &_buttons {
+    margin-top: 90px;
+    margin-left: 50px;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+  }
+
+}
+
+.title {
+  display: flex;
+  margin-left: 50px;
+  justify-content: start;
+  @include font-700;
+  font-size: 44px;
+  text-align: center;
+  color: $black;
+}
+
+.description {
+  margin: 50px;
+  @include font-500;
+  line-height: 180%;
+  color: #AFADB5;
+}
+
+.price {
+  display: flex;
+  justify-content: left;
+  margin-left: 50px;
+  @include font-700;
+  font-size: 44px;
+  color: $black;
+}
+
+
+.button_cart {
+  background-color: white;
+  border: 2px solid #F3F3F3;
+  color: $black;
+
+}
+
+.loader {
+  margin: 0 auto;
+  width: 49px;
+  height: 49px;
+  left: 99.73px;
+  top: 667.73px;
+  border: 6px solid $green;
+  border-top: 6px solid transparent;
+  border-radius: 50%;
+  transform: rotate(120deg);
+  animation: rotate 1.5s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .container {
+    &_main {
+      display: flex;
+      flex-direction: column;
+      margin-left: 10px;
+    }
+
+    &_slider {
+      width: auto;
+    }
+
+    &_buttons {
+      margin-left: 0;
+      margin-top: 30px;
+      flex-direction: column;
+      gap: 12px;
+      width: auto;
+      align-items: center;
+    }
+  }
+
+  .img {
+    margin-left: 10px;
+    width: 327px;
+    height: auto;
+  }
+
+  .title {
+    font-size: 24px;
+    margin-left: 10px;
+    margin-top: 15px;
+  }
+  .description {
+    font-size: 14px;
+    margin-left: 10px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+  .price {
+    font-size: 24px;
+    margin-left: 10px;
+  }
+  .button {
+    &_cart {
+      font-size: 18px;
+      width: 100%;
+      height: 53px;
+    }
+
+    &_buy_now {
+      font-size: 18px;
+      width: 100%;
+      height: 53px;
+      margin-bottom: 0;
+    }
+  }
+
+}

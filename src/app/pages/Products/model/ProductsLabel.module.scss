@@ -1,0 +1,46 @@
+@import "./src/styles/variables";
+@import "./src/styles/mixins";
+
+.container {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  align-items: center;
+}
+
+.header {
+  justify-self: center;
+  width: 287px;
+  height: 83px;
+  @include font-700;
+  font-size: 64px;
+  text-align: center;
+  color: $black;
+}
+
+.content {
+  text-align: center;
+  justify-self: center;
+  width: 600px;
+  height: 64px;
+  @include font-500;
+  line-height: 180%;
+  color: #AFADB5;
+}
+
+@media (max-width: 700px) {
+  .container {
+    grid-template-rows: 20px 20px;
+  }
+  .header {
+    justify-self: center;
+    width: auto;
+    font-size: 26px;
+    margin-bottom: 20px;
+  }
+  .content {
+    justify-self: center;
+    font-size: 14px;
+    width: auto;
+    margin: 8px;
+  }
+}

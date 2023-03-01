@@ -1,0 +1,33 @@
+@import "./src/styles/variables";
+@import "./src/styles/mixins";
+
+.container {
+  position: relative;
+  width: 640px;
+}
+
+.img {
+  width: auto;
+}
+
+.btn {
+  &_previous {
+    @include slider_btn;
+    left: 20px;
+    top: 208px;
+    transform: rotate(180deg);
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.8);
+    }
+  }
+
+  &_next {
+    @include slider_btn;
+    right: 20px;
+    top: 208px;
+    &:hover {
+      background: rgba(0, 0, 0, 0.8);
+    }
+  }
+}
