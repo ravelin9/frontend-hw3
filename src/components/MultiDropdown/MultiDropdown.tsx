@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import styles from "./MultiDropdown.module.scss";
+
 export type Option = {
-  key: string;
-  value: string;
+  id: string;
+  name: string;
 };
 
 export type MultiDropdownProps = {
@@ -22,24 +23,37 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
   pluralizeOptions,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
   const toggle = () => {
     if (!disabled) {
       setIsOpen(!isOpen);
     }
   };
   const handleOptionClick = (selectedOption: Option) => {
-    let newValue;
-    if (value.some((option) => option.key === selectedOption.key)) {
-      newValue = value.filter((option) => option.key !== selectedOption.key);
-    } else {
-      newValue = [...value, selectedOption];
-    }
-    if (onChange) {
-      onChange(newValue);
+    const newValue: Option | undefined = options.find(
+      (option) => option.id === selectedOption.id
+    );
+    if (onChange && newValue) {
+      onChange([newValue]);
+      setIsOpen(false); // добавляем вызов setIsOpen(false)
     }
   };
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
   return (
-    <div className={styles.container}>
+    <div className={styles.container} ref={containerRef}>
       <div className={styles.header} onClick={toggle}>
         {pluralizeOptions(value)}
       </div>
@@ -47,19 +61,16 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
         <ul className={styles.options}>
           {!disabled &&
             options.map((option) => (
-              <li
-                key={option.key}
-                className={styles.option}
-                onClick={() => handleOptionClick(option)}
-              >
+              <li key={option.id} className={styles.option}>
                 <label>
                   <input
                     className={styles.input}
                     type="checkbox"
-                    checked={value.some((val) => val.key === option.key)}
+                    checked={value.some((val) => val.id === option.id)}
+                    onChange={() => handleOptionClick(option)}
                     readOnly
                   />
-                  <span className={styles.checkbox}>{option.value}</span>
+                  <span className={styles.checkbox}>{option.name}</span>
                 </label>
               </li>
             ))}

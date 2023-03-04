@@ -1,41 +1,50 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
 import Button from "@components/Button/Button";
 import Card from "@components/Card";
 import Input from "@components/Input/Input";
-import MultiDropdown, { Option } from "@components/MultiDropdown/MultiDropdown";
-import ProductCount from "@components/ProductCount/ProductCount";
+import Loader from "@components/Loader/Loader";
+import Counter from "@components/ProductCount/Counter";
+import { observer } from "mobx-react-lite";
+import qs from "qs";
 import ReactPaginate from "react-paginate";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
+import CategoriesDropdown from "./CategoriesDropdown";
 import ProductsLabel from "./model";
 import styles from "./Products.module.scss";
-import { useProducts } from "./ProductsProvider";
+import { IProducts } from "../../../entities/client";
+import { CategoriesStore } from "../../../store/CategoriesStore";
+import { ProductsStore } from "../../../store/ProductsStore";
 
-const Products = () => {
+interface Props {
+  store: ProductsStore;
+}
+
+const Products = observer(({ store }: Props) => {
+  const categoriesStore = useMemo(() => new CategoriesStore(), []);
+  const location = useLocation();
   const navigate = useNavigate();
-  const { products } = useProducts();
-  const productCount = products.length;
-  const productsPerPage = 9;
-  const pageCount = Math.ceil(productCount / productsPerPage);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
+  const pageCount = Math.ceil(store.products.length / 9);
+  const filteredProducts = store.products.filter(
+    (pro: any) =>
+      pro.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      (selectedCategory === "" || pro.category.id === selectedCategory)
+  );
+  const productCount = filteredProducts.length;
 
   useEffect(() => {
-    const savedPage = localStorage.getItem("currentPage");
-    if (savedPage !== null) {
-      setCurrentPage(parseInt(savedPage, 10));
-    }
-  }, []);
-
-  // @ts-ignore
-  const handlePageClick = ({ selected }: { selected: number }) => {
-    setCurrentPage(selected);
-    localStorage.setItem("currentPage", selected.toString());
-  };
-
-  const displayProducts = products
-    .slice(currentPage * productsPerPage, (currentPage + 1) * productsPerPage)
-    .map((pro) => (
+    setIsLoading(true);
+    store.fetchProducts(searchQuery).then(() => setIsLoading(false));
+  }, [store, currentPage, searchQuery, selectedCategory]);
+  const displayProducts = filteredProducts
+    .slice(currentPage * 9, (currentPage + 1) * 9)
+    .map((pro: IProducts) => (
       <div key={pro.id} className={styles.card}>
         <Card
           category={pro.category.name}
@@ -47,51 +56,97 @@ const Products = () => {
         />
       </div>
     ));
+
+  const handlePageClick = ({ selected }: { selected: number }) => {
+    setCurrentPage(selected);
+    const query = qs.stringify({ page: selected, searchQuery });
+    navigate(`${location.pathname}?${query}`);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      const query = qs.stringify({ page: 0, searchQuery });
+      navigate(`${location.pathname}?${query}`);
+    }
+  };
+
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    store.setSelectedCategory(category);
+    setCurrentPage(0); // Сброс текущей страницы
+    const query = qs.stringify({ page: 0, searchQuery, categoryID: category }); // Добавление categoryID в строку запроса URL
+    navigate(`${location.pathname}?${query}`);
+  };
+
+  useEffect(() => {
+    const query = qs.parse(location.search, { ignoreQueryPrefix: true });
+    const page = parseInt(query.page as string, 10) || 0;
+    const search = (query.searchQuery as string) || "";
+    setCurrentPage(page);
+    setSearchQuery(search);
+    setInputValue(search);
+  }, [location.search]);
+  useEffect(() => {
+    Promise.all([
+      store.fetchProducts(searchQuery),
+      categoriesStore.fetchCategories(),
+    ]).then(() => setIsLoading(false));
+  }, [store, currentPage, searchQuery, selectedCategory, categoriesStore]);
   return (
     <>
       <ProductsLabel />
       <div className={styles.container_search}>
         <Input
           placeholder="Search property"
-          onChange={(value: string) => value}
+          value={inputValue}
+          onChange={(value: string) => {
+            setInputValue(value);
+            setSearchQuery(value);
+          }}
+          onKeyDown={handleKeyDown}
         />
         <div className={styles.button}>
-          <Button>Find Now</Button>
+          <Button
+            onClick={() => {
+              const query = qs.stringify({ page: currentPage, searchQuery });
+              navigate(`${location.pathname}?${query}`);
+            }}
+          >
+            Find Now
+          </Button>
         </div>
       </div>
       <div className={styles.container_dropdown}>
-        <MultiDropdown
-          options={[
-            { key: "3", value: "Electronics" },
-            { key: "2", value: "Shoes" },
-            { key: "4", value: "Others" },
-          ]}
-          value={[{ key: "2", value: "Shoes" }]}
-          pluralizeOptions={(values: Option[]) => `Filter: ${values.length}`}
-        />
+        <CategoriesDropdown onChange={handleCategoryChange} />
       </div>
       <div className={styles.container_label}>
-        Total Product <ProductCount />
+        Total Product <Counter count={productCount} />
       </div>
 
-      <div className={styles.container_card}>{displayProducts}</div>
-      <ReactPaginate
-        previousLabel={<div className={styles.vector_previous} />}
-        nextLabel={<div className={styles.vector_next} />}
-        breakLabel={"..."}
-        pageCount={pageCount}
-        marginPagesDisplayed={1}
-        pageRangeDisplayed={3}
-        onPageChange={handlePageClick}
-        containerClassName={styles.pagination}
-        activeClassName={styles.active}
-        pageClassName={styles.page}
-        pageLinkClassName={styles.links}
-        disabledClassName={styles.vector_disabled}
-        forcePage={currentPage}
-      />
+      {isLoading ? (
+        <Loader className={styles.loader} loading={true} />
+      ) : (
+        <>
+          <div className={styles.container_card}>{displayProducts}</div>
+          <ReactPaginate
+            previousLabel={<div className={styles.vector_previous} />}
+            nextLabel={<div className={styles.vector_next} />}
+            breakLabel={"..."}
+            pageCount={pageCount}
+            marginPagesDisplayed={1}
+            pageRangeDisplayed={3}
+            onPageChange={handlePageClick}
+            containerClassName={styles.pagination}
+            activeClassName={styles.active}
+            pageClassName={styles.page}
+            pageLinkClassName={styles.links}
+            disabledClassName={styles.vector_disabled}
+            forcePage={currentPage}
+          />
+        </>
+      )}
     </>
   );
-};
+});
 
 export default Products;
