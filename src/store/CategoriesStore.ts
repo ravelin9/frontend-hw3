@@ -1,6 +1,8 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 
 import { ProductsStore } from "./ProductsStore";
+import { RootStore } from "./RootStore";
+import { endpoints } from "../configs/endpoints";
 
 export interface Category {
   id: string;
@@ -8,23 +10,26 @@ export interface Category {
 }
 
 export class CategoriesStore {
+  private readonly rootStore: RootStore;
   categories: Category[] = [];
   selectedCategories: Category[] = [];
 
-  constructor() {
+  constructor(rootStore: RootStore) {
+    this.rootStore = rootStore;
     makeAutoObservable(this);
   }
 
   async fetchCategories() {
     try {
-      const response = await fetch(
-        "https://api.escuelajs.co/api/v1/categories"
+      const response = await this.rootStore.apiStore.fetch<[]>(
+        endpoints.categories
       );
-      const data = await response.json();
-      this.categories = data.map((category: Category) => ({
-        id: category.id,
-        name: category.name,
-      }));
+      runInAction(() => {
+        this.categories = response.map((category: Category) => ({
+          id: category.id,
+          name: category.name,
+        }));
+      });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
@@ -36,14 +41,16 @@ export class CategoriesStore {
     onChange?: (categoryId: string) => void,
     productsStore?: ProductsStore
   ) {
-    this.selectedCategories = categories;
-    if (onChange) {
-      if (categories.length === 0) {
-        productsStore?.setSelectedCategory("");
-      } else {
-        onChange(categories[0].id);
-        productsStore?.setSelectedCategory(categories[0].id.toString());
+    runInAction(() => {
+      this.selectedCategories = categories;
+      if (onChange) {
+        if (categories.length === 0) {
+          productsStore?.setSelectedCategory("");
+        } else {
+          onChange(categories[0].id);
+          productsStore?.setSelectedCategory(categories[0].id.toString());
+        }
       }
-    }
+    });
   }
 }

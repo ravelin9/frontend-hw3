@@ -1,5 +1,6 @@
 export const endpoints = {
   baseUrl: "https://api.escuelajs.co/api/v1/",
+  categories: "categories",
   products: (
     searchQuery: string,
     selectedCategory: string,

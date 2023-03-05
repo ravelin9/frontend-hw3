@@ -10,8 +10,8 @@ export class RootStore {
   apiStore: ApiStore;
 
   constructor() {
-    this.productsStore = new ProductsStore();
-    this.categoriesStore = new CategoriesStore();
+    this.productsStore = new ProductsStore(this);
+    this.categoriesStore = new CategoriesStore(this);
     this.apiStore = new ApiStore();
   }
 }

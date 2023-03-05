@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 
 import Button from "@components/Button/Button";
 import Card from "@components/Card";
@@ -19,10 +19,10 @@ import { ProductsStore } from "../../../store/ProductsStore";
 
 interface Props {
   store: ProductsStore;
+  categoriesStore: CategoriesStore;
 }
 
-const Products = observer(({ store }: Props) => {
-  const categoriesStore = useMemo(() => new CategoriesStore(), []);
+const Products = observer(({ store, categoriesStore }: Props) => {
   const location = useLocation();
   const navigate = useNavigate();
   const searchQuery = store.searchQuery;
