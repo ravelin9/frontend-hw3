@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useCallback } from "react";
 
 import Button from "@components/Button/Button";
 import Card from "@components/Card";
+import CategoriesDropdown from "@components/CategoriesDropdown/CategoriesDropdown";
 import Input from "@components/Input/Input";
 import Loader from "@components/Loader/Loader";
 import Counter from "@components/ProductCount/Counter";
@@ -10,7 +11,6 @@ import qs from "qs";
 import ReactPaginate from "react-paginate";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import CategoriesDropdown from "./CategoriesDropdown";
 import ProductsLabel from "./model";
 import styles from "./Products.module.scss";
 import { IProducts } from "../../../entities/client";
@@ -25,24 +25,16 @@ const Products = observer(({ store }: Props) => {
   const categoriesStore = useMemo(() => new CategoriesStore(), []);
   const location = useLocation();
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [inputValue, setInputValue] = useState("");
-  const [currentPage, setCurrentPage] = useState(0);
+  const searchQuery = store.searchQuery;
+  const selectedCategory = store.selectedCategory;
+  const currentPage = store.currentPage;
   const pageCount = Math.ceil(store.products.length / 9);
-  const filteredProducts = store.products.filter(
-    (pro: any) =>
-      pro.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      (selectedCategory === "" || pro.category.id === selectedCategory)
-  );
-  const productCount = filteredProducts.length;
+  const productCount = store.filteredProducts.length;
 
   useEffect(() => {
-    setIsLoading(true);
-    store.fetchProducts(searchQuery).then(() => setIsLoading(false));
-  }, [store, currentPage, searchQuery, selectedCategory]);
-  const displayProducts = filteredProducts
+    store.fetchProducts();
+  }, [store, currentPage, selectedCategory]);
+  const displayProducts = store.filteredProducts
     .slice(currentPage * 9, (currentPage + 1) * 9)
     .map((pro: IProducts) => (
       <div key={pro.id} className={styles.card}>
@@ -58,7 +50,7 @@ const Products = observer(({ store }: Props) => {
     ));
 
   const handlePageClick = ({ selected }: { selected: number }) => {
-    setCurrentPage(selected);
+    store.setCurrentPage(selected);
     const query = qs.stringify({ page: selected, searchQuery });
     navigate(`${location.pathname}?${query}`);
   };
@@ -71,26 +63,29 @@ const Products = observer(({ store }: Props) => {
   };
 
   const handleCategoryChange = (category: string) => {
-    setSelectedCategory(category);
     store.setSelectedCategory(category);
-    setCurrentPage(0); // Сброс текущей страницы
+    store.setSelectedCategory(category);
+    store.setCurrentPage(0); // Сброс текущей страницы
     const query = qs.stringify({ page: 0, searchQuery, categoryID: category }); // Добавление categoryID в строку запроса URL
     navigate(`${location.pathname}?${query}`);
   };
+  const handleSearch = useCallback(
+    (value: string) => {
+      store.setSearchQuery(value);
+      store.fetchProducts();
+    },
+    [store]
+  );
 
   useEffect(() => {
     const query = qs.parse(location.search, { ignoreQueryPrefix: true });
     const page = parseInt(query.page as string, 10) || 0;
     const search = (query.searchQuery as string) || "";
-    setCurrentPage(page);
-    setSearchQuery(search);
-    setInputValue(search);
-  }, [location.search]);
+    store.setCurrentPage(page);
+    store.setSearchQuery(search);
+  }, [store, location.search]);
   useEffect(() => {
-    Promise.all([
-      store.fetchProducts(searchQuery),
-      categoriesStore.fetchCategories(),
-    ]).then(() => setIsLoading(false));
+    Promise.all([store.fetchProducts(), categoriesStore.fetchCategories()]);
   }, [store, currentPage, searchQuery, selectedCategory, categoriesStore]);
   return (
     <>
@@ -98,11 +93,8 @@ const Products = observer(({ store }: Props) => {
       <div className={styles.container_search}>
         <Input
           placeholder="Search property"
-          value={inputValue}
-          onChange={(value: string) => {
-            setInputValue(value);
-            setSearchQuery(value);
-          }}
+          value={store.searchQuery}
+          onChange={handleSearch}
           onKeyDown={handleKeyDown}
         />
         <div className={styles.button}>
@@ -123,7 +115,7 @@ const Products = observer(({ store }: Props) => {
         Total Product <Counter count={productCount} />
       </div>
 
-      {isLoading ? (
+      {store.isLoading ? (
         <Loader className={styles.loader} loading={true} />
       ) : (
         <>

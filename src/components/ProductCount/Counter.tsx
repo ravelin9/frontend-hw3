@@ -5,4 +5,4 @@ const Counter = ({ count }: { count: number }) => {
   return <div className={styles.counter}>{count}</div>;
 };
 
-export default Counter;
+export default React.memo(Counter);

@@ -1,20 +1,22 @@
 import axios from "axios";
-import { action, makeObservable, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 
+import { endpoints } from "../configs/endpoints";
 import { IProducts } from "../entities/client";
 
 export class ProductsStore {
   products: IProducts[] = [];
-  selectedCategory = "";
+  selectedCategory: string = "";
+  currentPage: number = 0;
+  searchQuery: string = "";
+  isLoading: boolean = true;
 
   constructor() {
-    makeObservable(this, {
-      products: observable,
-      selectedCategory: observable,
-      setProducts: action,
-      setSelectedCategory: action,
-      fetchProducts: action,
-    });
+    makeAutoObservable(this);
+  }
+
+  setIsLoading(isLoading: boolean) {
+    this.isLoading = isLoading;
   }
 
   setProducts(products: IProducts[]) {
@@ -22,18 +24,51 @@ export class ProductsStore {
   }
 
   setSelectedCategory(categoryId: string) {
-    this.selectedCategory = categoryId;
+    if (this.selectedCategory !== categoryId) {
+      this.selectedCategory = categoryId;
+      this.currentPage = 0;
+      this.fetchProducts();
+    }
   }
 
-  async fetchProducts(searchQuery: string) {
+  setCurrentPage(page: number) {
+    if (this.currentPage !== page) {
+      this.currentPage = page;
+      this.fetchProducts();
+    }
+  }
+
+  async fetchProducts() {
     try {
-      const response = await axios.get<IProducts[]>(
-        `https://api.escuelajs.co/api/v1/products/?title=${searchQuery}&categoryId=${this.selectedCategory}`
-      );
+      this.setIsLoading(true);
+
+      const url =
+        endpoints.baseUrl +
+        endpoints.products(
+          this.searchQuery,
+          this.selectedCategory,
+          this.currentPage
+        );
+      const response = await axios.get<IProducts[]>(url);
       this.setProducts(response.data);
+      this.setIsLoading(false);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
     }
+  }
+
+  setSearchQuery(query: string) {
+    this.searchQuery = query;
+    this.fetchProducts();
+  }
+
+  get filteredProducts() {
+    return this.products.filter(
+      (pro: any) =>
+        pro.title.toLowerCase().includes(this.searchQuery.toLowerCase()) &&
+        (this.selectedCategory === "" ||
+          pro.category.id === this.selectedCategory)
+    );
   }
 }
