@@ -14,8 +14,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import ProductsLabel from "./model";
 import styles from "./Products.module.scss";
 import { IProducts } from "../../../entities/client";
-import { CategoriesStore } from "../../../store/CategoriesStore";
-import { ProductsStore } from "../../../store/ProductsStore";
+import { CategoriesStore } from "../../../stores/CategoriesStore";
+import { ProductsStore } from "../../../stores/ProductsStore";
 
 interface Props {
   store: ProductsStore;

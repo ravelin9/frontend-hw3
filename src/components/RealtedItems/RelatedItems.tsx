@@ -1,35 +1,22 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 
 import Card from "@components/Card";
-import axios from "axios";
+import { useStores } from "@utils/hooks/useStores";
+import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
 
 import styles from "./relatedItems.module.scss";
-import { IProducts } from "../../entities/client";
 
 type Props = {
   categoryId: number;
 };
 
-const RelatedItems = ({ categoryId }: Props) => {
+const RelatedItems = observer(({ categoryId }: Props) => {
   const navigate = useNavigate();
-  const [relatedProducts, setRelatedProducts] = useState<IProducts[]>([]);
-
+  const relatedItemsStore = useStores();
   useEffect(() => {
-    const fetchRelatedProducts = async () => {
-      try {
-        const response = await axios.get<IProducts[]>(
-          `https://api.escuelajs.co/api/v1/products/?categoryId=${categoryId}`
-        );
-        setRelatedProducts(response.data.slice(0, 4));
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error);
-      }
-    };
-
-    fetchRelatedProducts();
-  }, [categoryId]);
+    relatedItemsStore.relatedItemsStore.fetchRelatedProducts(categoryId);
+  }, [categoryId, relatedItemsStore.relatedItemsStore]);
 
   const handleClick = useCallback(
     (id: number) => {
@@ -42,7 +29,7 @@ const RelatedItems = ({ categoryId }: Props) => {
     <>
       <div className={styles.title}>Related Items</div>
       <div className={styles.container}>
-        {relatedProducts.map((product) => (
+        {relatedItemsStore.relatedItemsStore.relatedProducts.map((product) => (
           <Card
             key={product.id}
             category={product.category.name}
@@ -56,6 +43,6 @@ const RelatedItems = ({ categoryId }: Props) => {
       </div>
     </>
   );
-};
+});
 
-export default React.memo(RelatedItems);
+export default RelatedItems;
