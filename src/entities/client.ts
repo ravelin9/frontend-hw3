@@ -11,12 +11,3 @@ export interface IProducts {
     image: string;
   };
 }
-
-export interface IProductsContext {
-  products: IProducts[];
-}
-
-export interface IProductContext {
-  product: IProducts;
-  isLoading: boolean;
-}

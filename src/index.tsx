@@ -2,16 +2,13 @@ import React from "react";
 
 import ReactDOM from "react-dom/client";
 
-import ProductsProvider from "./app/pages/Products/ProductsProvider";
-import Routing from "./app/pages/Routing";
-
+import "./configs/configureMobX";
+import App from "./App";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <ProductsProvider>
-      <Routing />
-    </ProductsProvider>
+    <App />
   </React.StrictMode>
 );

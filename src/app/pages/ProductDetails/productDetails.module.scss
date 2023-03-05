@@ -14,6 +14,12 @@
     flex-direction: row;
     gap: 30px;
   }
+  &_product{
+margin: 0;
+  }
+  &_related{
+margin: 0;
+  }
 
 }
 
@@ -51,27 +57,7 @@
 
 }
 
-.loader {
-  margin: 0 auto;
-  width: 49px;
-  height: 49px;
-  left: 99.73px;
-  top: 667.73px;
-  border: 6px solid $green;
-  border-top: 6px solid transparent;
-  border-radius: 50%;
-  transform: rotate(120deg);
-  animation: rotate 1.5s linear infinite;
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+@include loader;
 
 @media screen and (max-width: 700px) {
   .container {
