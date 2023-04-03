@@ -31,3 +31,26 @@
     }
   }
 }
+
+@media screen and (max-width: 700px) {
+  .container{
+    width: auto;
+  }
+  .img{
+    width: 97%;
+  }
+  .btn{
+    &_previous{
+      height: 40px;
+      width: 40px;
+      top: 110px;
+      left: 3px;
+    }
+    &_next{
+      height: 40px;
+      width: 40px;
+      top: 110px;
+      right: 13px;
+    }
+  }
+}

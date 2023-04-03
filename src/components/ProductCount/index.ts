@@ -1,1 +1,1 @@
-export { default } from "./ProductCount";
+export { default } from "./Counter";

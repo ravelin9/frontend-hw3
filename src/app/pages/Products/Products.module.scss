@@ -97,6 +97,7 @@
   line-height: 180%;
   color: #AFADB5;
 }
+@include loader;
 
 @media (max-width: 700px) {
 .container{
